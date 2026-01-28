@@ -1,0 +1,118 @@
+//import React from 'react'
+import { Link, useLocation, useNavigate } from "react-router-dom"
+import logo from '../assets/Image/logo.png'
+import { AiOutlineLogout } from "react-icons/ai";
+import product from '../assets/Image/product.png'
+import popup from '../assets/Image/popup.png'
+import blog from '../assets/Image/blog.png'
+import contact from '../assets/Image/contacts.png'
+import team from '../assets/Image/team.png'
+const Sidebar = () => {
+    const navigate = useNavigate();
+    const location = useLocation();
+    const handlelogout = () => {
+        localStorage.clear();
+        navigate('/login')
+    }
+    return (
+        <>
+
+            <div className="w-full  h-[100%] overflow-x-hidden overflow-y-au
+            to relative bg-black">
+                <div className="w-full flex justify-center py-4">
+                    <img src={logo} alt="Logo" className="h-[30px]" />
+                </div>
+
+                <ul className="*:py-1 px-3 *:text-sm *:font-light *:text-primary">
+                    <li>
+                        <Link to={'/popup-content'} className='w-full  py-2  text-start block  text-white'>
+                            <div className="w-full flex gap-2 items-center">
+                                <div className={`h-[40px] w-[40px] flex justify-center items-center ${location.pathname === "/popup-content" ? "text-secondary" : ""}`}>
+                                    <img src={popup} className="h-[30px]" />
+
+                                </div>
+                                <div className={` font-[500] text-[16px] ${location.pathname === '/popup-content' ? "text-secondary" : "text-white"}`}>
+                                    Popup Content
+                                </div>
+                            </div>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to={'/product'} className='w-full  py-2  text-start block  text-white'>
+                            <div className="w-full flex gap-2 items-center">
+                                <div className={`h-[40px] w-[40px] flex justify-center items-center ${location.pathname === "/product" ? "text-secondary" : ""}`}>
+
+                                    <img src={product} className="h-[30px]" />
+
+
+                                </div>
+                                <div className={` font-[500] text-[16px] ${location.pathname === '/product' ? "text-secondary" : "text-white"}`}>
+                                    Product
+                                </div>
+                            </div>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to={'/blog'} className='w-full  py-2  text-start block  text-white'>
+                            <div className="w-full flex gap-2 items-center">
+                                <div className={`h-[40px] w-[40px] flex justify-center items-center ${location.pathname === "/blog" ? "text-secondary" : ""}`}>
+                                    <img src={blog} className="h-[30px]" />
+
+                                </div>
+                                <div className={` font-[500] text-[16px] ${location.pathname === '/blog' ? "text-secondary" : "text-white"}`}>
+                                    Blog
+                                </div>
+                            </div>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to={'/companyoverview'} className='w-full  py-2  text-start block  text-white'>
+                            <div className="w-full flex gap-2 items-center">
+                                <div className={`h-[40px] w-[40px] flex justify-center items-center ${location.pathname === "/companyoverview" ? "text-secondary" : ""}`}>
+                                    <img src={team} className="h-[30px]" />
+
+                                </div>
+                                <div className={` font-[500] text-[16px] ${location.pathname === '/companyoverview' ? "text-secondary" : "text-white"}`}>
+                                   Team
+                                </div>
+                            </div>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to={'/contact'} className='w-full  py-2  text-start block  text-white'>
+                            <div className="w-full flex gap-2 items-center">
+                                <div className={`h-[40px] w-[40px] flex justify-center items-center ${location.pathname === "/contact" ? "text-secondary" : ""}`}>
+                                    <img src={contact} className="h-[30px]" />
+
+                                </div>
+                                <div className={` font-[500] text-[16px] ${location.pathname === '/contact' ? "text-secondary" : "text-white"}`}>
+                                    Contact
+                                </div>
+                            </div>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link className='w-full  py-2  text-start block  text-white'>
+                            <div className="w-full flex gap-2 items-center" onClick={handlelogout}>
+                                <div className={`h-[40px] w-[40px] flex justify-center items-center ${location.pathname === "/" ? "text-secondary" : ""}`}>
+                                    <AiOutlineLogout className="text-light text-2xl  " />
+
+                                </div>
+                                <div className={` font-[500]  text-[16px] ${location.pathname === '/' ? "text-secondary" : "text-white"}`}>
+                                    Logout
+                                </div>
+                            </div>
+                        </Link>
+                    </li>
+
+
+
+
+
+                </ul>
+            </div>
+        </>
+    )
+}
+
+export default Sidebar
