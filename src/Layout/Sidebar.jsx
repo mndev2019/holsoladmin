@@ -7,6 +7,9 @@ import popup from '../assets/Image/popup.png'
 import blog from '../assets/Image/blog.png'
 import contact from '../assets/Image/contacts.png'
 import team from '../assets/Image/team.png'
+import customer from '../assets/Image/customer.png'
+import Register from '../assets/Image/register.png'
+import user from '../assets/Image/user.png'
 const Sidebar = () => {
     const navigate = useNavigate();
     const location = useLocation();
@@ -24,6 +27,7 @@ const Sidebar = () => {
                 </div>
 
                 <ul className="*:py-1 px-3 *:text-sm *:font-light *:text-primary">
+
                     <li>
                         <Link to={'/popup-content'} className='w-full  py-2  text-start block  text-white'>
                             <div className="w-full flex gap-2 items-center">
@@ -73,7 +77,7 @@ const Sidebar = () => {
 
                                 </div>
                                 <div className={` font-[500] text-[16px] ${location.pathname === '/companyoverview' ? "text-secondary" : "text-white"}`}>
-                                   Team
+                                    Team
                                 </div>
                             </div>
                         </Link>
@@ -87,6 +91,45 @@ const Sidebar = () => {
                                 </div>
                                 <div className={` font-[500] text-[16px] ${location.pathname === '/contact' ? "text-secondary" : "text-white"}`}>
                                     Contact
+                                </div>
+                            </div>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to={'/enquiry-customer'} className='w-full  py-2  text-start block  text-white'>
+                            <div className="w-full flex gap-2 items-center">
+                                <div className={`h-[40px] w-[40px] flex justify-center items-center ${location.pathname == "/enquiry-customer" ? "text-secondary" : ""}`}>
+                                    <img src={customer} className="h-[30px]" />
+
+                                </div>
+                                <div className={` font-[500] text-[16px] ${location.pathname === '/enquiry-customer' ? "text-secondary" : "text-white"}`}>
+                                    Customer
+                                </div>
+                            </div>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to={'/register-customer'} className='w-full  py-2  text-start block  text-white'>
+                            <div className="w-full flex gap-2 items-center">
+                                <div className={`h-[40px] w-[40px] flex justify-center items-center ${location.pathname == "/register-customer" ? "text-secondary" : ""}`}>
+                                    <img src={Register} className="h-[30px]" />
+
+                                </div>
+                                <div className={` font-[500] text-[16px] ${location.pathname === '/register-customer' ? "text-secondary" : "text-white"}`}>
+                                    Register Customer
+                                </div>
+                            </div>
+                        </Link>
+                    </li>
+                        <li>
+                        <Link to={'/customer-profile'} className='w-full  py-2  text-start block  text-white'>
+                            <div className="w-full flex gap-2 items-center">
+                                <div className={`h-[40px] w-[40px] flex justify-center items-center ${location.pathname =="/customer-profile" ? "text-secondary" : ""}`}>
+                                    <img src={user} className="h-[30px]" />
+
+                                </div>
+                                <div className={` font-[500] text-[16px] ${location.pathname === '/customer-profile' ? "text-secondary" : "text-white"}`}>
+                                 Customer Profile
                                 </div>
                             </div>
                         </Link>

@@ -10,6 +10,11 @@ import Contact from './Pages/Contact'
 import Login from './Auth/Login'
 import CompanyOverview from './Pages/CompanyOverview'
 
+import EnquiryCustomer from './Pages/EnquiryCustomer'
+import RegisterCoustomer from './Pages/RegisterCoustomer'
+import ProfileDetail from './Pages/ProfileDetail'
+import Profile from './Pages/Profile'
+
 
 
 
@@ -21,11 +26,15 @@ function App() {
         <Route path='/' element={<Navigate to="/login" replace />} />
         <Route path='/login' element={<Login />} />
         <Route path='/' element={<Layout />}>
+          <Route path='/customer-profile' element={<Profile />} />
+          <Route path='/profile-detail' element={<ProfileDetail/>}/>
+          <Route path='/enquiry-customer' element={<EnquiryCustomer />} />
           <Route path='/popup-content' element={<Popupimage />} />
           <Route path='/product' element={<Product />} />
           <Route path='/blog' element={<Blog />} />
           <Route path='/contact' element={<Contact />} />
-          <Route path='/companyoverview' element={<CompanyOverview/>}/> 
+          <Route path='/companyoverview' element={<CompanyOverview />} />
+          <Route path='/register-customer' element={<RegisterCoustomer />} />
           {/* <Route path='/popup' element={<Popupimage/>}/> */}
 
           {/* <Route index element={<Createcategory />} /> */}
