@@ -17,17 +17,15 @@ const Contact = () => {
     const [editId, setEditId] = useState(null)
     const [loading, setLoading] = useState(false)
 
-    /* ================= FETCH ================= */
     const fetchContact = async () => {
         try {
             const resp = await axios.get(`${Base_Url}api/contact`)
             if (resp.data.success && resp.data.data) {
-                setData([resp.data.data]) // single record
+                setData([resp.data.data])
             } else {
                 setData([])
             }
-        } catch (error) {
-            console.log(error)
+        } catch {
             toast.error("Failed to fetch contact")
         }
     }
@@ -36,22 +34,10 @@ const Contact = () => {
         fetchContact()
     }, [])
 
-    /* ================= SUBMIT ================= */
     const handleSubmit = async () => {
-        if (!phone.trim()) {
-            toast.error("Phone number is required")
-            return
-        }
-
-        if (!whatsapp.trim()) {
-            toast.error("WhatsApp number is required")
-            return
-        }
-
-        if (!email.trim()) {
-            toast.error("Email is required")
-            return
-        }
+        if (!phone.trim()) return toast.error("Phone required")
+        if (!whatsapp.trim()) return toast.error("WhatsApp required")
+        if (!email.trim()) return toast.error("Email required")
 
         const payload = { phone, whatsapp, email }
 
@@ -72,15 +58,13 @@ const Contact = () => {
             } else {
                 toast.error(resp.data.message)
             }
-        } catch (error) {
-            console.log(error)
+        } catch {
             toast.error("Something went wrong")
         } finally {
             setLoading(false)
         }
     }
 
-    /* ================= EDIT ================= */
     const handleEdit = (item) => {
         setphone(item.phone)
         setwhatsapp(item.whatsapp)
@@ -88,7 +72,6 @@ const Contact = () => {
         setEditId(item._id)
     }
 
-    /* ================= DELETE ================= */
     const handleDelete = async (id) => {
         if (!window.confirm("Are you sure?")) return
 
@@ -100,8 +83,7 @@ const Contact = () => {
             } else {
                 toast.error(resp.data.message)
             }
-        } catch (error) {
-            console.log(error)
+        } catch {
             toast.error("Delete failed")
         }
     }
@@ -110,11 +92,12 @@ const Contact = () => {
         <>
             <TopHeader />
 
-            <section className="py-2 px-4">
-                <div className="container">
+            <section className="py-4 px-3 md:px-6">
+                <div className="container mx-auto">
                     <SectionTilte title="Contact" />
 
-                    <div className="grid grid-cols-3 gap-4 items-end">
+                    {/* 🔹 FORM */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
                         <div>
                             <FormLabel label="Phone Number" />
                             <input
@@ -145,69 +128,106 @@ const Contact = () => {
                             />
                         </div>
 
-                        <div className="pt-2">
+                        <div className="md:col-span-3 pt-2">
                             <button
                                 disabled={loading}
                                 onClick={handleSubmit}
-                                className="text-xs uppercase text-white px-6 py-2 rounded bg-blue-500 disabled:opacity-60"
+                                className="w-full md:w-auto text-xs uppercase text-white px-6 py-3 rounded bg-blue-500 disabled:opacity-60"
                             >
                                 {loading
-                                    ? "Please wait..."
+                                    ? "PLEASE WAIT..."
                                     : editId
                                     ? "UPDATE"
                                     : "SUBMIT"}
                             </button>
                         </div>
                     </div>
-                </div>
 
-                {/* ================= TABLE ================= */}
-                <div className="pt-6">
-                    <table className="w-full border-separate border-spacing-y-1">
-                        <thead>
-                            <tr className="bg-[#FAFAFA] text-sm font-bold">
-                                <th className="p-3 text-left">Phone</th>
-                                <th className="p-3 text-left">WhatsApp</th>
-                                <th className="p-3 text-left">Email</th>
-                                <th className="p-3 text-left">Action</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            {data.length === 0 ? (
-                                <tr>
-                                    <td colSpan="4" className="text-center py-4">
-                                        No contact found
-                                    </td>
+                    {/* 🔹 DESKTOP TABLE */}
+                    <div className="pt-6 hidden md:block">
+                        <table className="w-full border-separate border-spacing-y-2">
+                            <thead>
+                                <tr className="bg-[#FAFAFA] text-sm font-semibold">
+                                    <th className="p-3 text-left">Phone</th>
+                                    <th className="p-3 text-left">WhatsApp</th>
+                                    <th className="p-3 text-left">Email</th>
+                                    <th className="p-3 text-center">Action</th>
                                 </tr>
-                            ) : (
-                                data.map((itm) => (
-                                    <tr key={itm._id} className="bg-white text-sm">
-                                        <td className="p-3">{itm.phone}</td>
-                                        <td className="p-3">{itm.whatsapp}</td>
-                                        <td className="p-3">{itm.email}</td>
-                                        <td className="p-3">
-                                            <div className="flex gap-3">
-                                                <button
-                                                    onClick={() => handleEdit(itm)}
-                                                    className="shadow p-2 rounded"
-                                                >
-                                                    <FaRegEdit className="text-blue-500 text-lg" />
-                                                </button>
+                            </thead>
 
-                                                <button
-                                                    onClick={() => handleDelete(itm._id)}
-                                                    className="shadow p-2 rounded"
-                                                >
-                                                    <AiOutlineDelete className="text-red-500 text-lg" />
-                                                </button>
-                                            </div>
+                            <tbody>
+                                {data.length === 0 ? (
+                                    <tr>
+                                        <td colSpan="4" className="text-center py-6">
+                                            No contact found
                                         </td>
                                     </tr>
-                                ))
-                            )}
-                        </tbody>
-                    </table>
+                                ) : (
+                                    data.map((itm) => (
+                                        <tr key={itm._id} className="bg-white shadow text-sm">
+                                            <td className="p-3">{itm.phone}</td>
+                                            <td className="p-3">{itm.whatsapp}</td>
+                                            <td className="p-3">{itm.email}</td>
+
+                                            <td className="p-3">
+                                                <div className="flex justify-center gap-2">
+                                                    <button
+                                                        onClick={() => handleEdit(itm)}
+                                                        className="bg-blue-100 hover:bg-blue-200 p-2 rounded-full"
+                                                    >
+                                                        <FaRegEdit className="text-blue-600" />
+                                                    </button>
+
+                                                    <button
+                                                        onClick={() => handleDelete(itm._id)}
+                                                        className="bg-red-100 hover:bg-red-200 p-2 rounded-full"
+                                                    >
+                                                        <AiOutlineDelete className="text-red-600" />
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    {/* 🔹 MOBILE CARD VIEW */}
+                    <div className="md:hidden pt-6 space-y-4">
+                        {data.length === 0 ? (
+                            <p className="text-center">No contact found</p>
+                        ) : (
+                            data.map((itm) => (
+                                <div key={itm._id} className="bg-white rounded-xl shadow p-4">
+
+                                    <div className="space-y-1">
+                                        <p className="text-sm"><b>Phone:</b> {itm.phone}</p>
+                                        <p className="text-sm"><b>WhatsApp:</b> {itm.whatsapp}</p>
+                                        <p className="text-sm"><b>Email:</b> {itm.email}</p>
+                                    </div>
+
+                                    <div className="flex gap-3 mt-4">
+                                        <button
+                                            onClick={() => handleEdit(itm)}
+                                            className="flex-1 bg-blue-100 text-blue-600 py-2 rounded"
+                                        >
+                                            Edit
+                                        </button>
+
+                                        <button
+                                            onClick={() => handleDelete(itm._id)}
+                                            className="flex-1 bg-red-100 text-red-600 py-2 rounded"
+                                        >
+                                            Delete
+                                        </button>
+                                    </div>
+
+                                </div>
+                            ))
+                        )}
+                    </div>
+
                 </div>
             </section>
 
