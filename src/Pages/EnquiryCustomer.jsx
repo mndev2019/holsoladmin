@@ -1,4 +1,4 @@
-import React, { useState} from 'react'
+import React, { useState } from 'react'
 import TopHeader from '../Layout/TopHeader'
 import Footer from '../Layout/Footer'
 import { Base_Url } from '../API/Base_Url'
@@ -11,13 +11,15 @@ const EnquiryCustomer = () => {
     const [data, setData] = useState([])
     const [search, setSearch] = useState("")
     const [dateFilter, setDateFilter] = useState("")
+    const [page, setPage] = useState(1)
 
     // 🔹 Fetch Data
-    const fetchCustomer = async () => {
+    const fetchCustomer = async (pageNumber = 1) => {
         try {
-            const resp = await axios.get(`${Base_Url}api/enquiry`)
+            const resp = await axios.get(`${Base_Url}api/enquiry?page=${pageNumber}`)
+
             if (resp.data.success) {
-                setData(resp.data.data)
+                setData(resp.data.data) // ✅ replace (pagination)
             } else {
                 toast.error(resp.data.message)
             }
@@ -27,8 +29,8 @@ const EnquiryCustomer = () => {
     }
 
     React.useEffect(() => {
-        fetchCustomer()
-    }, [])
+        fetchCustomer(page)
+    }, [page])
 
     // 🔍 FILTER LOGIC
     const filteredData = data.filter(item => {
@@ -36,9 +38,7 @@ const EnquiryCustomer = () => {
 
         const matchesSearch =
             item.name?.toLowerCase().includes(searchText) ||
-            item.email?.toLowerCase().includes(searchText) ||
-            item.mobile?.toLowerCase().includes(searchText) ||
-            item.message?.toLowerCase().includes(searchText)
+            item.mobile?.toLowerCase().includes(searchText)
 
         const matchesDate = dateFilter
             ? moment(item.createdAt).format("YYYY-MM-DD") === dateFilter
@@ -60,7 +60,7 @@ const EnquiryCustomer = () => {
 
                         <input
                             type="text"
-                            placeholder="Search by name, email, mobile..."
+                            placeholder="Search by name or mobile..."
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                             className="border rounded px-3 py-2 w-full md:w-[300px]"
@@ -84,7 +84,7 @@ const EnquiryCustomer = () => {
                         </button>
                     </div>
 
-                    {/* 🔹 DESKTOP TABLE */}
+                    {/* 🔹 TABLE */}
                     <div className="hidden md:block overflow-x-auto">
                         <table className="w-full border-separate border-spacing-y-2">
                             <thead>
@@ -123,7 +123,7 @@ const EnquiryCustomer = () => {
                         </table>
                     </div>
 
-                    {/* 🔹 MOBILE CARD VIEW */}
+                    {/* 🔹 MOBILE */}
                     <div className="md:hidden space-y-4">
                         {filteredData.length === 0 ? (
                             <p className="text-center text-gray-500">
@@ -132,7 +132,6 @@ const EnquiryCustomer = () => {
                         ) : (
                             filteredData.map((itm) => (
                                 <div key={itm._id} className="bg-white rounded-xl shadow p-4">
-
                                     <p className="font-semibold">{itm.name}</p>
 
                                     <div className="text-sm text-gray-600 mt-2 space-y-1">
@@ -145,10 +144,35 @@ const EnquiryCustomer = () => {
                                             {moment(itm.createdAt).format("DD MMM YYYY")}
                                         </p>
                                     </div>
-
                                 </div>
                             ))
                         )}
+                    </div>
+
+                    {/* 🔥 PAGINATION BUTTONS */}
+                    <div className="flex justify-center gap-4 mt-6">
+                        <button
+                            disabled={page === 1}
+                            onClick={() => setPage(page - 1)}
+                            className={`px-4 py-2 rounded ${
+                                page === 1
+                                    ? "bg-gray-300 cursor-not-allowed"
+                                    : "bg-blue-500 text-white"
+                            }`}
+                        >
+                            Previous
+                        </button>
+
+                        <span className="px-3 py-2 font-semibold">
+                            Page {page}
+                        </span>
+
+                        <button
+                            onClick={() => setPage(page + 1)}
+                            className="bg-blue-500 text-white px-4 py-2 rounded"
+                        >
+                            Next
+                        </button>
                     </div>
 
                 </div>
